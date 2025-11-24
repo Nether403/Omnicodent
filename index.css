@@ -1,0 +1,45 @@
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #020617;
+  color: #fafafa;
+  overflow-x: hidden;
+}
+
+/* The "Void" Background Layer */
+.bg-void {
+  background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 60%);
+  position: fixed; inset: 0; z-index: -10;
+}
+
+/* Noise Texture */
+.noise {
+  position: fixed; inset: 0; z-index: -2; pointer-events: none; opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* Scanlines */
+.scanlines {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.6;
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+  background-size: 100% 4px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617; 
+}
+::-webkit-scrollbar-thumb {
+  background: #334155; 
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f97316; 
+}
+
+html {
+  scroll-behavior: smooth;
+}
