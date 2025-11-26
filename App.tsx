@@ -7,13 +7,15 @@ import { Hero } from './components/Hero';
 import { InputArea } from './components/InputArea';
 import { LivePreview } from './components/LivePreview';
 import { CreationHistory, Creation } from './components/CreationHistory';
+import { UserGuide } from './components/UserGuide';
 import { bringToLife } from './services/gemini';
-import { ArrowUpTrayIcon } from '@heroicons/react/24/solid';
+import { ArrowUpTrayIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/solid';
 
 const App: React.FC = () => {
   const [activeCreation, setActiveCreation] = useState<Creation | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [history, setHistory] = useState<Creation[]>([]);
+  const [showGuide, setShowGuide] = useState(false);
   const importInputRef = useRef<HTMLInputElement>(null);
 
   // Load history from local storage or fetch examples on mount
@@ -294,17 +296,35 @@ const App: React.FC = () => {
         isFocused={isFocused}
         onReset={handleReset}
       />
+      
+      {/* User Guide Modal */}
+      <UserGuide isOpen={showGuide} onClose={() => setShowGuide(false)} />
 
-      {/* Subtle Import Button (Bottom Right) */}
-      <div className="fixed bottom-4 right-4 z-50">
+      {/* Floating Action Buttons (Bottom Right) */}
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-3">
+        {/* Guide Button */}
         <button 
-            onClick={handleImportClick}
-            className="flex items-center space-x-2 p-2 text-slate-500 hover:text-brand-orange transition-colors opacity-60 hover:opacity-100"
-            title="Import Artifact"
+            onClick={() => setShowGuide(true)}
+            className="flex items-center space-x-2 p-3 rounded-full bg-slate-900/80 border border-white/10 text-slate-400 hover:text-brand-orange hover:border-brand-orange/50 transition-all shadow-lg hover:shadow-brand-orange/20"
+            title="System Manual"
         >
-            <span className="text-xs font-orbitron uppercase tracking-wider hidden sm:inline">Upload previous artifact</span>
-            <ArrowUpTrayIcon className="w-5 h-5" />
+            <QuestionMarkCircleIcon className="w-6 h-6" />
         </button>
+
+        {/* Import Button */}
+        <div className="relative group">
+            <button 
+                onClick={handleImportClick}
+                className="flex items-center space-x-2 p-3 rounded-full bg-slate-900/80 border border-white/10 text-slate-400 hover:text-brand-orange hover:border-brand-orange/50 transition-all shadow-lg hover:shadow-brand-orange/20"
+                title="Import Artifact"
+            >
+                <ArrowUpTrayIcon className="w-6 h-6" />
+            </button>
+            <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                <span className="text-xs font-orbitron uppercase tracking-wider text-slate-300 bg-black/80 px-2 py-1 rounded border border-white/10">Import JSON</span>
+            </div>
+        </div>
+        
         <input 
             type="file" 
             ref={importInputRef} 
